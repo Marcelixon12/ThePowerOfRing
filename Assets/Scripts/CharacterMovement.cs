@@ -16,12 +16,16 @@ public class CharacterMovement : MonoBehaviour
     public GameObject Bow;
     bool isBow = false;
     Animator anim;
+    public BowController bow;
+    public int currentHealth = 0;
+    public int maxHealth = 100;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         currentSpeed = Speed;
+        currentHealth = 100;
     }
 
     // Update is called once per frame
@@ -39,7 +43,7 @@ public class CharacterMovement : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            if (direction.z != 0f && direction.x != 0f)
+            if (direction.z != 0f && direction.x != 0f && !bow.isCharging)
             {
                 anim.SetBool("Normal", false);
                 anim.SetBool("Walk", false);
@@ -65,7 +69,7 @@ public class CharacterMovement : MonoBehaviour
         {
             stamina += Time.deltaTime;
             currentSpeed = Speed;
-            if (direction.z != 0f && direction.x != 0f)
+            if (direction.z != 0f && direction.x != 0f && !bow.isCharging)
             {
                 anim.SetBool("Normal", false);
                 
@@ -78,7 +82,7 @@ public class CharacterMovement : MonoBehaviour
             
             
             
-            else if (direction.z == 0f && direction.x == 0f)
+            else if (direction.z == 0f && direction.x == 0f && !bow.isCharging)
             {
 
                 anim.SetBool("Walk", false);

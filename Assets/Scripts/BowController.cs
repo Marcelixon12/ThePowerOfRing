@@ -4,14 +4,24 @@ public class BowController : MonoBehaviour
 {
     public GameObject arrowPrefab;
     public Transform spawnPoint;
-    public Transform player;
+    public Transform player; // Najlepiej przypisaæ tutaj kamerê (dla celowania góra/dó³)
+
     public float maxForce = 50f;
     public float chargeSpeed = 10f;
 
+    [Header("Pozycje (X: prawo/lewo, Y: góra/dó³, Z: przód/ty³)")]
+    // Pozycja w rêku (celowanie)
+    public Vector3 chargingOffset = new Vector3(0.4f, 1.2f, 0.4f);
+    // Pozycja na plecach (spoczynek)
+    public Vector3 backOffset = new Vector3(0f, 1.3f, -0.25f);
+
+    [Header("Rotacje (stopnie)")]
+    public Vector3 chargingRotationExtra = new Vector3(0, -90f, 0);
+    public Vector3 backRotationExtra = new Vector3(0, 0, 90f); // Obrót ³uku p³asko na plecach
+
     float currentForce;
-    bool isCharging;
-    public Vector3 idleOffset = new Vector3(0, 1.112f, -0.189f);
-    public Vector3 chargingOffset = new Vector3(0.875f, 1.275f, 0.394f);
+    public bool isCharging;
+
     public Animator player_anim;
 
     private void Start()
@@ -33,7 +43,7 @@ public class BowController : MonoBehaviour
             player_anim.SetBool("StopAttack", false);
             player_anim.SetBool("Walk", false);
             player_anim.SetBool("StartAttack", true);
-            Invoke("Metod", 2);
+            Invoke("Metod", 1);
         }
 
         if (isCharging)
@@ -57,25 +67,32 @@ public class BowController : MonoBehaviour
             player_anim.SetBool("Normal", true);
         }
 
-        // 2. AKTUALIZACJA POZYCJI I ROTACJI (zawsze w Update, aby ³uk œledzi³ ruch)
+
         if (isCharging)
         {
-            // Ustawia ³uk w pozycji "bojowej" wzglêdem kierunku patrzenia gracza
-            Vector3 chargingOffset = new Vector3(0, 1.275f, 0.394f);
+            // £UK W RÊKU (CELOWANIE)
             transform.position = player.TransformPoint(chargingOffset);
 
-            // Rotacja: patrzy tam gdzie gracz + poprawka -90 stopni na osi Y
-            transform.rotation = Quaternion.Euler(player.eulerAngles.x, player.eulerAngles.y - 90f, player.eulerAngles.z);
+            // Dodajemy rotacjê dodatkow¹ do kierunku patrzenia gracza
+            transform.rotation = Quaternion.Euler(
+                player.eulerAngles.x + chargingRotationExtra.x,
+                player.eulerAngles.y + chargingRotationExtra.y,
+                player.eulerAngles.z + chargingRotationExtra.z
+            );
         }
         else
         {
-            // Ustawia ³uk w pozycji "spoczynkowej" wzglêdem kierunku patrzenia gracza
-            Vector3 idleOffset = new Vector3(0, 1.112f, -0.189f);
-            transform.position = player.TransformPoint(idleOffset);
+            // £UK NA PLECACH
+            transform.position = player.TransformPoint(backOffset);
 
-            // Rotacja: identyczna jak u gracza
-            transform.rotation = player.rotation;
+            // Obracamy ³uk tak, aby le¿a³ p³asko na plecach gracza
+            transform.rotation = Quaternion.Euler(
+                player.eulerAngles.x + backRotationExtra.x,
+                player.eulerAngles.y + backRotationExtra.y,
+                player.eulerAngles.z + backRotationExtra.z
+            );
         }
+
     }
 
 
