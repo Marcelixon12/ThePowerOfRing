@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public GameObject[] spawnPoints;
+    
     [SerializeField] protected int currentHealth;
     [SerializeField] protected int maxHealth;
     [SerializeField] protected float speed;
@@ -17,11 +17,15 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected float attackDistance;
     [SerializeField] protected int damage;
     [SerializeField] protected float cooldown;
+    [SerializeField] protected float detectionDistance;
+    protected Animator anim;
+    
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = FindObjectOfType<CharacterMovement>().gameObject;
         rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -59,7 +63,9 @@ public class Enemy : MonoBehaviour
             // wy³¹czanie collidera wroga
             GetComponent<Collider>().enabled = false;
             // w³¹czanie animacji œmierci
+            EnemySpawn.enemiesDead += 1;
             
         }
     }
+    
 }

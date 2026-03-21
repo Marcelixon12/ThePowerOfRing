@@ -126,5 +126,20 @@ public class CharacterMovement : MonoBehaviour
             Bow.SetActive(true);
         }
     }
+    public void ChangeHealth(int count)
+    {
+        // odejmowanie zdrowia
+        currentHealth -= count;
+        // jeœli zdrowie spada do zera lub ni¿ej, to...
+        if (currentHealth <= 0)
+        {
+            // zmiana wartoœci zmiennej dead, co oznacza, ¿e wywo³ania funkcji Attack i Move przestan¹ dzia³aæ
+            Time.timeScale = 0;
+            // wy³¹czanie collidera wroga
+            
+            // w³¹czanie animacji œmierci
+
+        }
+    }
 }
 
