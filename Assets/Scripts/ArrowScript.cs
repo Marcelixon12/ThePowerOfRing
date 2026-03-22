@@ -10,6 +10,7 @@ public class ArrowScript : MonoBehaviour
     // Wybierz oœ, która ma byæ grotem (domyœlnie w Unity to Vector3.forward)
     // Jeœli strza³a leci bokiem, spróbuj zmieniæ to na Vector3.up lub Vector3.right
     [SerializeField] private Vector3 forwardDirection = Vector3.forward;
+    
 
     void Start()
     {
@@ -33,5 +34,10 @@ public class ArrowScript : MonoBehaviour
         hasHit = true;
         rb.isKinematic = true;
         transform.parent = collision.transform;
+        if (collision.gameObject.CompareTag("Skeleton"))
+        {
+            Destroy(gameObject);
+            collision.gameObject.GetComponent<Skeleton>().ChangeHealth(CharacterMovement.damage);
+        }
     }
 }

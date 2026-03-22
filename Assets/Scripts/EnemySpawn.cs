@@ -23,6 +23,7 @@ public class EnemySpawn : MonoBehaviour
         {
             Spawn();
             waves += 1;
+            enemiesDead = 0;
         }
     }
     public void Spawn()

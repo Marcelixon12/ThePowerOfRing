@@ -19,6 +19,7 @@ public class CharacterMovement : MonoBehaviour
     public BowController bow;
     public int currentHealth = 0;
     public int maxHealth = 100;
+    public static int damage = 10;
     // Start is called before the first frame update
     void Start()
     {
