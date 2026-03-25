@@ -9,6 +9,7 @@ public class EnemySpawn : MonoBehaviour
     public static int enemiesDead = 0;
     public GameObject enemy;    
     public int waves = 0;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -19,12 +20,19 @@ public class EnemySpawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (enemiesDead >= 10 && waves <= 4)
+        if (enemiesDead >= 10 && waves < 4)
         {
             Spawn();
             waves += 1;
             enemiesDead = 0;
         }
+        else if (waves == 4)
+        {
+
+        }
+
+        
+
     }
     public void Spawn()
     {

@@ -19,7 +19,11 @@ public class CharacterMovement : MonoBehaviour
     public BowController bow;
     public int currentHealth = 0;
     public int maxHealth = 100;
-    public static int damage = 10;
+    public static int normalDamage = 10;
+    public static int currentDamage;
+    public GameObject store;
+    public int gold = 0;
+    public int stoneBowPrice = 10;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +31,7 @@ public class CharacterMovement : MonoBehaviour
         anim = GetComponent<Animator>();
         currentSpeed = Speed;
         currentHealth = 100;
+        currentDamage = normalDamage;
     }
 
     // Update is called once per frame
@@ -41,6 +46,14 @@ public class CharacterMovement : MonoBehaviour
             rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
             isGrounded = false;
             
+            anim.SetBool("Walk", false);
+            anim.SetBool("isAttacking", false);
+            anim.SetBool("StartAttack", false);
+            anim.SetBool("StopAttack", false);
+            anim.SetBool("Run", false);
+            anim.SetBool("Normal", false);
+            anim.SetBool("Jump", true);
+
         }
         if (Input.GetKey(KeyCode.LeftShift))
         {
@@ -48,7 +61,7 @@ public class CharacterMovement : MonoBehaviour
             {
                 anim.SetBool("Normal", false);
                 anim.SetBool("Walk", false);
-
+                anim.SetBool("Jump", false);
                 anim.SetBool("isAttacking", false);
                 anim.SetBool("StartAttack", false);
                 anim.SetBool("StopAttack", false);
@@ -73,7 +86,7 @@ public class CharacterMovement : MonoBehaviour
             if (direction.z != 0f && direction.x != 0f && !bow.isCharging)
             {
                 anim.SetBool("Normal", false);
-                
+                anim.SetBool("Jump", false);
                 anim.SetBool("Run", false);
                 anim.SetBool("isAttacking", false);
                 anim.SetBool("StartAttack", false);
@@ -85,7 +98,7 @@ public class CharacterMovement : MonoBehaviour
             
             else if (direction.z == 0f && direction.x == 0f && !bow.isCharging)
             {
-
+                anim.SetBool("Jump", false);
                 anim.SetBool("Walk", false);
                 anim.SetBool("isAttacking", false);
                 anim.SetBool("StartAttack", false);
@@ -126,6 +139,13 @@ public class CharacterMovement : MonoBehaviour
             isBow = true;
             Bow.SetActive(true);
         }
+        if (other.gameObject.CompareTag("Store"))
+        {
+            SetActive();
+            Cursor.lockState = CursorLockMode.None;
+            // Upewnienie siê, ¿e kursor jest widoczny
+            Cursor.visible = true;
+        }
     }
     public void ChangeHealth(int count)
     {
@@ -142,5 +162,36 @@ public class CharacterMovement : MonoBehaviour
 
         }
     }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Store"))
+        {
+            NoSetActive();
+            Cursor.lockState = CursorLockMode.Locked;
+            // Upewnienie siê, ¿e kursor jest widoczny
+            Cursor.visible = false;
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        
+    }
+    void SetActive()
+    {
+        store.SetActive(true);
+    }
+    void NoSetActive()
+    {
+        store.SetActive(false);
+    }
+    void BuyStoneBow()
+    {
+        if (gold >= stoneBowPrice)
+        {
+            gold -= stoneBowPrice;
+
+        }
+    }
+
 }
 

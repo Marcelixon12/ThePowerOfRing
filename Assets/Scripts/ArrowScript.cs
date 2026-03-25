@@ -37,7 +37,7 @@ public class ArrowScript : MonoBehaviour
         if (collision.gameObject.CompareTag("Skeleton"))
         {
             Destroy(gameObject);
-            collision.gameObject.GetComponent<Skeleton>().ChangeHealth(CharacterMovement.damage);
+            collision.gameObject.GetComponent<Skeleton>().ChangeHealth(CharacterMovement.currentDamage);
         }
     }
 }
