@@ -13,7 +13,11 @@ public class CharacterMovement : MonoBehaviour
     Rigidbody rb;
     Vector3 direction;
     bool isGrounded = false;
-    public GameObject Bow;
+    public GameObject woodBow;
+    public GameObject stoneBow;
+    public GameObject ironBow;
+    public GameObject goldBow;
+    public GameObject diamondBow;
     bool isBow = false;
     Animator anim;
     public BowController bow;
@@ -24,6 +28,10 @@ public class CharacterMovement : MonoBehaviour
     public GameObject store;
     public int gold = 0;
     public int stoneBowPrice = 10;
+    public int ironBowPrice = 100;
+    public int goldBowPrice = 1000;
+    public int diamondBowPrice = 10000;
+    public UIScript ui;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,11 +40,13 @@ public class CharacterMovement : MonoBehaviour
         currentSpeed = Speed;
         currentHealth = 100;
         currentDamage = normalDamage;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(gold);
         float Horizontal = Input.GetAxis("Horizontal");
         float Vertical = Input.GetAxis("Vertical");
         direction = new Vector3(Horizontal, 0f, Vertical);
@@ -137,11 +147,15 @@ public class CharacterMovement : MonoBehaviour
         {
             Destroy(other.gameObject);
             isBow = true;
-            Bow.SetActive(true);
+            woodBow.SetActive(true);
+            stoneBow.SetActive(false);  
+            ironBow.SetActive(false);
+            goldBow.SetActive(false);
+            diamondBow.SetActive(false);
         }
         if (other.gameObject.CompareTag("Store"))
         {
-            SetActive();
+            ui.SetActive();
             Cursor.lockState = CursorLockMode.None;
             // Upewnienie siê, ¿e kursor jest widoczny
             Cursor.visible = true;
@@ -166,7 +180,7 @@ public class CharacterMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Store"))
         {
-            NoSetActive();
+            ui.NoSetActive();
             Cursor.lockState = CursorLockMode.Locked;
             // Upewnienie siê, ¿e kursor jest widoczny
             Cursor.visible = false;
@@ -176,22 +190,6 @@ public class CharacterMovement : MonoBehaviour
     {
         
     }
-    void SetActive()
-    {
-        store.SetActive(true);
-    }
-    void NoSetActive()
-    {
-        store.SetActive(false);
-    }
-    void BuyStoneBow()
-    {
-        if (gold >= stoneBowPrice)
-        {
-            gold -= stoneBowPrice;
-
-        }
-    }
-
+    
 }
 
