@@ -23,8 +23,12 @@ public class CharacterMovement : MonoBehaviour
     public BowController bow;
     public int currentHealth = 0;
     public int maxHealth = 100;
-    public static int normalDamage = 10;
-    public static int currentDamage;
+    public  int normalDamage = 10;
+    public  int stoneDamage = 15;
+    public int ironDamage = 30;
+    public int goldDamage = 50;
+    public int diamondDamage = 100;
+    public static  int currentDamage;
     public GameObject store;
     public int gold = 0;
     public int stoneBowPrice = 10;
@@ -47,6 +51,7 @@ public class CharacterMovement : MonoBehaviour
     void Update()
     {
         Debug.Log(gold);
+        Debug.Log(currentDamage);
         float Horizontal = Input.GetAxis("Horizontal");
         float Vertical = Input.GetAxis("Vertical");
         direction = new Vector3(Horizontal, 0f, Vertical);

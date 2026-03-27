@@ -25,6 +25,7 @@ public class UIScript : MonoBehaviour
             cm.ironBow.SetActive(false);
             cm.goldBow.SetActive(false);
             cm.diamondBow.SetActive(false);
+            CharacterMovement.currentDamage = cm.stoneDamage;
         }
     }
     public void BuyIronBow()
@@ -37,6 +38,7 @@ public class UIScript : MonoBehaviour
             cm.ironBow.SetActive(true);
             cm.goldBow.SetActive(false);
             cm.diamondBow.SetActive(false);
+            CharacterMovement.currentDamage = cm.ironDamage;
         }
     }
     public void BuyGoldBow()
@@ -49,6 +51,7 @@ public class UIScript : MonoBehaviour
             cm.ironBow.SetActive(false);
             cm.goldBow.SetActive(true);
             cm.diamondBow.SetActive(false);
+            CharacterMovement.currentDamage = cm.goldDamage;
         }
     }
     public void BuyDiamondBow()
@@ -61,6 +64,7 @@ public class UIScript : MonoBehaviour
             cm.ironBow.SetActive(false);
             cm.goldBow.SetActive(false);
             cm.diamondBow.SetActive(true);
+            CharacterMovement.currentDamage = cm.diamondDamage;
         }
     }
 }
