@@ -36,6 +36,7 @@ public class CharacterMovement : MonoBehaviour
     public int goldBowPrice = 1000;
     public int diamondBowPrice = 10000;
     public UIScript ui;
+    public bool isCanShoot = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -161,6 +162,7 @@ public class CharacterMovement : MonoBehaviour
         if (other.gameObject.CompareTag("Store"))
         {
             ui.SetActive();
+            isCanShoot = false;
             Cursor.lockState = CursorLockMode.None;
             // Upewnienie siê, ¿e kursor jest widoczny
             Cursor.visible = true;
@@ -186,6 +188,7 @@ public class CharacterMovement : MonoBehaviour
         if (other.gameObject.CompareTag("Store"))
         {
             ui.NoSetActive();
+            isCanShoot = true;
             Cursor.lockState = CursorLockMode.Locked;
             // Upewnienie siê, ¿e kursor jest widoczny
             Cursor.visible = false;
