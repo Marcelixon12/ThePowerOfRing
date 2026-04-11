@@ -19,6 +19,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected float cooldown;
     [SerializeField] protected float detectionDistance;
     protected Animator anim;
+    public PartManager pm;
     
     // Start is called before the first frame update
     void Start()
@@ -36,6 +37,7 @@ public class Enemy : MonoBehaviour
         {
             Attack();
         }
+        
 
     }
     private void FixedUpdate()
@@ -63,7 +65,13 @@ public class Enemy : MonoBehaviour
             // wy³¹czanie collidera wroga
             GetComponent<Collider>().enabled = false;
             // w³¹czanie animacji œmierci
+            anim.SetBool("Attack", false);
+            anim.SetBool("Move", false);
+            anim.SetBool("Idle", false);
+            anim.SetBool("Die", true);
             EnemySpawn.enemiesDead += 1;
+            if (PlayerPrefs.GetString("SceneName") == "Forest")
+            pm.enemyDead += 1;
             
         }
     }

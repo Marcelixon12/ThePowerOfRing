@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CharacterMovement : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class CharacterMovement : MonoBehaviour
     public GameObject ironBow;
     public GameObject goldBow;
     public GameObject diamondBow;
-    bool isBow = false;
+    public bool isBow = false;
     Animator anim;
     public BowController bow;
     public int currentHealth = 0;
@@ -37,15 +38,59 @@ public class CharacterMovement : MonoBehaviour
     public int diamondBowPrice = 10000;
     public UIScript ui;
     public bool isCanShoot = true;
+    public  bool isCanForest = false;
+    bool isLoading = false;
+    public GameObject part1;
+    public GameObject portal2;
+    GameObject Portal;
+
     // Start is called before the first frame update
     void Start()
     {
+        //PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteKey("SceneName");
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         currentSpeed = Speed;
         currentHealth = 100;
         currentDamage = normalDamage;
-        
+        Portal = FindObjectOfType<Save>().gameObject;
+
+        // SprawdŸ zapisan¹ pozycjê
+        if (PlayerPrefs.HasKey("posX"))
+        {
+            float loadedX = PlayerPrefs.GetFloat("posX");
+            float loadedY = PlayerPrefs.GetFloat("posY");
+            float loadedZ = PlayerPrefs.GetFloat("posZ");
+            transform.position = new Vector3(loadedX, loadedY, loadedZ);
+        }
+
+        if (PlayerPrefs.HasKey("Bow"))
+        {
+            woodBow.SetActive(true);
+        }
+
+        // NAPRAWA PÊTLI:
+        if (PlayerPrefs.HasKey("SceneName"))
+        {
+            string savedScene = PlayerPrefs.GetString("SceneName");
+            // £aduj tylko, jeœli aktualna scena jest INNA ni¿ ta zapisana
+            if (SceneManager.GetActiveScene().name != savedScene)
+            {
+                SceneManager.LoadScene(savedScene);
+            }
+        }
+        if (PlayerPrefs.HasKey("Parts"))
+        {
+            if (PlayerPrefs.GetInt("Parts") == 1)
+            {
+                part1.SetActive(true);
+            }
+        }
+        if (PlayerPrefs.GetInt("Destroyed") == 1)
+        {
+            PartManager.isDestroyed = true;
+        }
     }
 
     // Update is called once per frame
@@ -136,6 +181,10 @@ public class CharacterMovement : MonoBehaviour
         {
             stamina = 0;
         }
+        if (PlayerPrefs.GetInt("Level") == 1)
+        {
+            part1.SetActive(true);
+        }
     }
     void FixedUpdate()
     {
@@ -149,15 +198,12 @@ public class CharacterMovement : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Bow") && isBow == false)
+        if (other.gameObject.CompareTag("Bow") && !isBow)
         {
+            PlayerPrefs.SetInt("Bow", 1);
             Destroy(other.gameObject);
             isBow = true;
             woodBow.SetActive(true);
-            stoneBow.SetActive(false);  
-            ironBow.SetActive(false);
-            goldBow.SetActive(false);
-            diamondBow.SetActive(false);
         }
         if (other.gameObject.CompareTag("Store"))
         {
@@ -166,6 +212,27 @@ public class CharacterMovement : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             // Upewnienie siê, ¿e kursor jest widoczny
             Cursor.visible = true;
+        }
+        if (other.gameObject.CompareTag("Forest") && isCanForest)
+        {
+            isLoading = true;
+            SceneManager.LoadScene("Forest");
+            PlayerPrefs.SetString("SceneName", "Forest");
+        }
+        if (other.gameObject.CompareTag("Part1") && PlayerPrefs.GetString("SceneName") == "Forest")
+        {
+            PlayerPrefs.SetInt("Parts", 1);
+            PlayerPrefs.SetInt("Destroyed", 1);
+            PartManager.isDestroyed = true;
+            Destroy(other.gameObject);
+            portal2.SetActive(true);
+            PlayerPrefs.SetInt("Level", 1);
+        }
+        if (other.gameObject.CompareTag("Village"))
+        {
+            SceneManager.LoadScene("SampleScene");
+            PlayerPrefs.SetString("SceneName", "SampleScene");
+            transform.position = Portal.transform.position;
         }
     }
     public void ChangeHealth(int count)

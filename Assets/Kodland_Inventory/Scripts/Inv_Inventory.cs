@@ -18,7 +18,7 @@ public class Inv_Inventory : MonoBehaviour
 
     private void Start()
     {
-        GameObject[] objArr = Resources.LoadAll<GameObject>("TestItems");
+        GameObject[] objArr = Resources.LoadAll<GameObject>("Items");
         resourceItems.AddRange(objArr);
         foreach(Transform child in buttonsPath.transform)
         {
@@ -83,7 +83,7 @@ public class Inv_Inventory : MonoBehaviour
                 itemInArm.SetActive(false);
             }
             var pos = resourceItem.GetComponent<Inv_ItemPosition>().positon;
-            if (pos == Inv_ItemPosition.ItemPos.Head)
+            if (pos == Inv_ItemPosition.ItemPos.Bow)
             {
                 itemPoint.position = itemPositions[0].position;
                 itemPosition = itemPositions[0].gameObject;

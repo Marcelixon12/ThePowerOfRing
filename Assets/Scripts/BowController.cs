@@ -9,7 +9,8 @@ public class BowController : MonoBehaviour
     public float maxForce = 50f;
     public float chargeSpeed = 10f;
     public CharacterMovement cm;
-
+    public float cooldown = 2f;
+    float timer = 0f;
    
 
     float currentForce;
@@ -20,9 +21,11 @@ public class BowController : MonoBehaviour
     private void Start()
     {
         isCharging = false;
+        cm = FindObjectOfType<CharacterMovement>().GetComponent<CharacterMovement>();
     }
     void Update()
     {
+        timer += Time.deltaTime;
         // 1. Obs³uga ³adowania (logika przycisków)
         if (Input.GetButtonDown("Fire1") && cm.isCanShoot)
         {
@@ -38,6 +41,7 @@ public class BowController : MonoBehaviour
             player_anim.SetBool("StartAttack", true);
             player_anim.SetBool("isAttacking", true);
         }
+        
 
         if (isCharging)
         {
@@ -68,10 +72,15 @@ public class BowController : MonoBehaviour
 
     void Shoot()
     {
-        GameObject arrow = Instantiate(arrowPrefab, spawnPoint.position, arrowPrefab.transform.rotation);
-
-        Rigidbody rb = arrow.GetComponent<Rigidbody>();
-        rb.AddForce(spawnPoint.forward * currentForce, ForceMode.Impulse);
+        if (timer >= cooldown)
+        {
+            timer = 0;
+            GameObject arrow = Instantiate(arrowPrefab, spawnPoint.position, arrowPrefab.transform.rotation);
+            
+            Rigidbody rb = arrow.GetComponent<Rigidbody>();
+            rb.AddForce(spawnPoint.forward * currentForce, ForceMode.Impulse);
+        }
+        
         
     }
 

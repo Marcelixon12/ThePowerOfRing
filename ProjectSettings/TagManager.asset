@@ -9,6 +9,11 @@ TagManager:
   - Bow
   - Skeleton
   - Store
+  - Forest
+  - Goblin
+  - Part1
+  - Village
+  - SpecialPortal
   layers:
   - Default
   - TransparentFX

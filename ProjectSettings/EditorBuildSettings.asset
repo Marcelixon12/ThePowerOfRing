@@ -4,5 +4,17 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/SampleScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Forest.unity
+    guid: b56f085ea49b52f469d55bc1f21935c9
+  - enabled: 1
+    path: Assets/Kodland_PlayerPrefs/Fox_Scenes/Menu.unity
+    guid: 8823d5fb7864cb045a1d63447455b60f
+  - enabled: 1
+    path: Assets/Kodland_PlayerPrefs/Fox_Scenes/Game.unity
+    guid: c732593fe76e5a84197f9cd13963f706
   m_configObjects: {}

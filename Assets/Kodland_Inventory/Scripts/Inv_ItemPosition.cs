@@ -4,7 +4,7 @@ public class Inv_ItemPosition : MonoBehaviour
 {
     public enum ItemPos
     {
-        Head,
+        Bow,
         Spine,
         RightArm
     }

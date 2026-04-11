@@ -12,6 +12,7 @@ public class ArrowScript : MonoBehaviour
     [SerializeField] private Vector3 forwardDirection = Vector3.forward;
     public CharacterMovement chara;
     
+    
 
     void Start()
     {
@@ -32,13 +33,22 @@ public class ArrowScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        hasHit = true;
-        rb.isKinematic = true;
-        transform.parent = collision.transform;
+        if (!collision.gameObject.CompareTag("Player"))
+        {
+            hasHit = true;
+            rb.isKinematic = true;
+            transform.parent = collision.transform;
+        }
+        
         if (collision.gameObject.CompareTag("Skeleton"))
         {
             Destroy(gameObject);
             collision.gameObject.GetComponent<Skeleton>().ChangeHealth(CharacterMovement.currentDamage);
+        }
+        if (collision.gameObject.CompareTag("Goblin"))
+        {
+            Destroy(gameObject);
+            collision.gameObject.GetComponent<Goblin>().ChangeHealth(CharacterMovement.currentDamage);
         }
     }
 }
